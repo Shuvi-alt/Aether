@@ -227,8 +227,13 @@
             font-size: 0.9rem;
         }
 
-        /* Fuerza al iframe a ocupar toda la pantalla al navegar */
-        iframe, #sj-frame {
+        /* Oculto por defecto; se expande a pantalla completa solo al buscar */
+        #sj-frame {
+            display: none;
+        }
+
+        #sj-frame.active {
+            display: block !important;
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
@@ -250,7 +255,7 @@
 
         <div class="badge">
             <span class="badge-dot"></span>
-            <span>Scramjet + Wisp</span>
+            <span>Scramjet + Epoxy</span>
         </div>
 
         <div class="nav-actions">
@@ -325,16 +330,19 @@
     </footer>
 
     <script>
+        // Sincronizar el selector de motor con el input oculto de Scramjet
         document.getElementById('engine-selector').addEventListener('change', (e) => {
             document.getElementById('sj-search-engine').value = e.target.value;
         });
 
+        // Función para enviar URL desde las tarjetas de atajos
         function launchUrl(url) {
             const input = document.getElementById('sj-address');
             input.value = url;
             document.getElementById('sj-form').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
         }
 
+        // Botón Lanzador de Modo Sigiloso (about:blank)
         document.getElementById('stealth-btn').addEventListener('click', () => {
             const win = window.open('about:blank', '_blank');
             if (win) {
@@ -350,12 +358,14 @@
             }
         });
 
+        // Botón de Pánico: Presionar la tecla 'Escape' redirige a Google Classroom
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 window.location.href = 'https://classroom.google.com';
             }
         });
 
+        // Tab Cloaking: Disfraz de título e icono de Google Drive
         document.title = 'My Drive - Google Drive';
         let favicon = document.querySelector("link[rel*='icon']") || document.createElement('link');
         favicon.type = 'image/x-icon';
