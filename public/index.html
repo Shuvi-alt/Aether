@@ -62,5 +62,22 @@
 				<span>Scramjet &copy; MW 2025</span>
 			</div>
 		</footer>
+		<script>
+  // Panic Button: Redirect to Google Classroom when 'Escape' key is pressed
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      window.location.href = 'https://classroom.google.com';
+    }
+  });
+
+  // Tab Cloaking: Disguise tab title and icon as Google Drive (English)
+  document.title = 'My Drive - Google Drive';
+  
+  let favicon = document.querySelector("link[rel*='icon']") || document.createElement('link');
+  favicon.type = 'image/x-icon';
+  favicon.rel = 'shortcut icon';
+  favicon.href = 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png';
+  document.getElementsByTagName('head')[0].appendChild(favicon);
+</script>
 	</body>
 </html>
