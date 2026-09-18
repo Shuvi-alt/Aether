@@ -1,15 +1,11 @@
 <!doctype html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-		/>
-		<title>Scramjet</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+		<title>My Drive - Google Drive</title>
+		<link rel="shortcut icon" href="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png" type="image/x-icon" />
 
-		<link rel="shortcut icon" content="favicon.webp" />
-	
 		<script src="/scram/scramjet.all.js"></script>
 		<script src="/baremux/index.js"></script>
 		
@@ -20,84 +16,70 @@
 	</head>
 
 	<body>
-		<div title="Scramjet Logo" class="flex-center logo-wrapper header-center">
-			<img class="logo" src="sj.png" alt="Scramjet" />
-			<h1>Scramjet | MW</h1>
+		<div title="Aether Proxy Logo" class="flex-center logo-wrapper header-center">
+			<img class="logo" src="sj.png" alt="Aether Proxy" />
+			<h1>Aether Proxy</h1>
 		</div>
+
 		<div class="flex-center desc left-margin">
 			<p>
-				Scramjet is an experimental interception based web proxy designed to
-				evade internet censorship, bypass arbitrary web browser restrictions and
-				innovate web proxy technologies.
+				A lightweight, low-resource web proxy designed for fast and discreet browsing.
 			</p>
 		</div>
 
 		<form id="sj-form" class="flex-center">
-			<input
-				id="sj-search-engine"
-				value="https://www.google.com/search?q=%s"
-				type="hidden"
-			/>
-			<input id="sj-address" type="text" placeholder="Search the web freely" />
+			<input id="sj-search-engine" value="https://www.google.com/search?q=%s" type="hidden" />
+			<input id="sj-address" type="text" placeholder="Search the web freely..." />
 		</form>
+
+		<div class="flex-center" style="margin-top: 15px;">
+			<button id="stealth-btn" type="button" style="padding: 8px 16px; cursor: pointer; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff;">
+				Open in Stealth Mode (about:blank)
+			</button>
+		</div>
+
 		<div class="desc left-margin">
 			<p id="sj-error"></p>
 			<pre id="sj-error-code"></pre>
 		</div>
+
 		<footer>
 			<div>
-				<a
-					title="The Mercury Workshop GitHub organization"
-					href="https://github.com/MercuryWorkshop"
-					>Mercury Workshop</a
-				>
-				<a
-					title="The example demo app for Scramjet"
-					href="https://github.com/MercuryWorkshop/Scramjet-Demo"
-					>GitHub</a
-				>
-				<a title="License information" href="credits.html">Credits</a>
-			</div>
-			<div>
-				<span>Scramjet &copy; MW 2025</span>
+				<span>Aether Proxy &copy; 2026</span>
 			</div>
 		</footer>
+
 		<script>
-  // 1. Lanzador about:blank (Espera un clic para burlar el bloqueador del navegador)
-  function launchStealth() {
-    if (window.top === window.self && !window.location.href.includes('about:blank')) {
-      let win = window.open('about:blank', '_blank');
-      if (win) {
-        win.document.body.style.margin = '0';
-        win.document.body.style.height = '100vh';
-        let iframe = win.document.createElement('iframe');
-        iframe.style.border = 'none';
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.src = window.location.href;
-        win.document.body.appendChild(iframe);
-        window.location.replace('https://classroom.google.com');
-      }
-    }
-  }
+			// 1. Stealth Mode Button Launcher
+			document.getElementById('stealth-btn').addEventListener('click', () => {
+				const win = window.open('about:blank', '_blank');
+				if (win) {
+					win.document.body.style.margin = '0';
+					win.document.body.style.height = '100vh';
+					const iframe = win.document.createElement('iframe');
+					iframe.style.border = 'none';
+					iframe.style.width = '100%';
+					iframe.style.height = '100%';
+					iframe.src = window.location.href;
+					win.document.body.appendChild(iframe);
+					window.location.replace('https://classroom.google.com');
+				}
+			});
 
-  // Se activa silenciosamente en el primer clic que hagas en la página
-  document.addEventListener('click', launchStealth, { once: true });
+			// 2. Panic Button: Press 'Escape' key to redirect to Google Classroom
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape') {
+					window.location.href = 'https://classroom.google.com';
+				}
+			});
 
-  // 2. BOTÓN DE PÁNICO: Presionar 'Escape' te manda a Google Classroom
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      window.location.href = 'https://classroom.google.com';
-    }
-  });
-
-  // 3. TAB CLOAKING: Disfraz de Google Drive
-  document.title = 'My Drive - Google Drive';
-  let favicon = document.querySelector("link[rel*='icon']") || document.createElement('link');
-  favicon.type = 'image/x-icon';
-  favicon.rel = 'shortcut icon';
-  favicon.href = 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png';
-  document.getElementsByTagName('head')[0].appendChild(favicon);
-</script>
+			// 3. Tab Cloaking: Disguise tab title and icon as Google Drive
+			document.title = 'My Drive - Google Drive';
+			let favicon = document.querySelector("link[rel*='icon']") || document.createElement('link');
+			favicon.type = 'image/x-icon';
+			favicon.rel = 'shortcut icon';
+			favicon.href = 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png';
+			document.getElementsByTagName('head')[0].appendChild(favicon);
+		</script>
 	</body>
 </html>
