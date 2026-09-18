@@ -6,7 +6,6 @@
     <title>My Drive - Google Drive</title>
     <link rel="shortcut icon" href="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png" type="image/x-icon" />
 
-    <!-- Scripts del motor Scramjet y BareMux (Epoxy) -->
     <script src="/scram/scramjet.all.js"></script>
     <script src="/baremux/index.js"></script>
     <script src="register-sw.js" defer></script>
@@ -30,7 +29,6 @@
             justify-content: space-between;
             align-items: center;
             padding: 24px;
-            overflow-x: hidden;
         }
 
         header {
@@ -229,45 +227,20 @@
             font-size: 0.9rem;
         }
 
-        /* Estilo para que las paginas cargadas ocupen el 100% de la pantalla */
-        iframe {
+        /* Fuerza al iframe a ocupar toda la pantalla al navegar */
+        iframe, #sj-frame {
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
             width: 100vw !important;
             height: 100vh !important;
             border: none !important;
-            z-index: 99999 !important;
+            z-index: 9999 !important;
             background-color: #0d0f12 !important;
-        }
-
-        /* Boton flotante para cerrar la navegacion y volver al inicio */
-        #close-iframe-btn {
-            position: fixed;
-            top: 12px;
-            right: 12px;
-            z-index: 100000;
-            background: #1f232d;
-            color: #fff;
-            border: 1px solid #374151;
-            padding: 8px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.8rem;
-            display: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-        }
-
-        #close-iframe-btn:hover {
-            background: #ef4444;
-            border-color: #dc2626;
         }
     </style>
 </head>
 <body>
-
-    <button id="close-iframe-btn" onclick="closeProxyView()">✕ Exit Page</button>
 
     <header>
         <div class="brand">
@@ -277,7 +250,7 @@
 
         <div class="badge">
             <span class="badge-dot"></span>
-            <span>Scramjet + Epoxy</span>
+            <span>Scramjet + Wisp</span>
         </div>
 
         <div class="nav-actions">
@@ -352,54 +325,16 @@
     </footer>
 
     <script>
-        // 1. Inicializacion de BareMux (Epoxy / Wisp) y AdBlocker
-        async function initProxyTransport() {
-            try {
-                if ('serviceWorker' in navigator) {
-                    await navigator.serviceWorker.register('/sw.js', { scope: '/service/' });
-                }
-                if (window.BareMux) {
-                    const conn = new BareMux.BareMuxConnection("/baremux/worker.js");
-                    const wispUrl = (location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/wisp/";
-                    if (await conn.getTransport() !== "/epoxy/index.mjs") {
-                        await conn.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
-                    }
-                }
-            } catch (err) {
-                console.warn("Transport/Worker init fallback:", err);
-            }
-        }
-        initProxyTransport();
-
-        // 2. Selector de motor de busqueda
         document.getElementById('engine-selector').addEventListener('change', (e) => {
             document.getElementById('sj-search-engine').value = e.target.value;
         });
 
-        // 3. Lanzador de accesos directos
         function launchUrl(url) {
             const input = document.getElementById('sj-address');
             input.value = url;
             document.getElementById('sj-form').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
         }
 
-        // 4. Mostrar boton de salir cuando se crea el iframe de navegacion
-        const observer = new MutationObserver(() => {
-            const iframe = document.querySelector('iframe');
-            const closeBtn = document.getElementById('close-iframe-btn');
-            if (iframe && closeBtn) {
-                closeBtn.style.display = 'block';
-            }
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        function closeProxyView() {
-            const iframe = document.querySelector('iframe');
-            if (iframe) iframe.remove();
-            document.getElementById('close-iframe-btn').style.display = 'none';
-        }
-
-        // 5. Boton Stealth Mode (about:blank)
         document.getElementById('stealth-btn').addEventListener('click', () => {
             const win = window.open('about:blank', '_blank');
             if (win) {
@@ -415,14 +350,12 @@
             }
         });
 
-        // 6. Boton de Panico ('Esc' redirige a Google Classroom)
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 window.location.href = 'https://classroom.google.com';
             }
         });
 
-        // 7. Tab Cloaking (Disfraz de Google Drive)
         document.title = 'My Drive - Google Drive';
         let favicon = document.querySelector("link[rel*='icon']") || document.createElement('link');
         favicon.type = 'image/x-icon';
