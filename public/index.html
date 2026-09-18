@@ -63,16 +63,31 @@
 			</div>
 		</footer>
 		<script>
-  // Panic Button: Redirect to Google Classroom when 'Escape' key is pressed
+  // 1. Lanzador about:blank (Abre el proxy en pestaña invisible y redirige la actual)
+  if (window.top === window.self && !window.location.href.includes('about:blank')) {
+    const win = window.open('about:blank', '_blank');
+    if (win) {
+      win.document.body.style.margin = '0';
+      win.document.body.style.height = '100vh';
+      const iframe = win.document.createElement('iframe');
+      iframe.style.border = 'none';
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      iframe.src = window.location.href;
+      win.document.body.appendChild(iframe);
+      window.location.replace('https://classroom.google.com');
+    }
+  }
+
+  // 2. BOTÓN DE PÁNICO: Presionar 'Escape' te manda a Google Classroom
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       window.location.href = 'https://classroom.google.com';
     }
   });
 
-  // Tab Cloaking: Disguise tab title and icon as Google Drive (English)
+  // 3. TAB CLOAKING: Disfraz de Google Drive
   document.title = 'My Drive - Google Drive';
-  
   let favicon = document.querySelector("link[rel*='icon']") || document.createElement('link');
   favicon.type = 'image/x-icon';
   favicon.rel = 'shortcut icon';
