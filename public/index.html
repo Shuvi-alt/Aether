@@ -63,21 +63,26 @@
 			</div>
 		</footer>
 		<script>
-  // 1. Lanzador about:blank (Abre el proxy en pestaña invisible y redirige la actual)
-  if (window.top === window.self && !window.location.href.includes('about:blank')) {
-    const win = window.open('about:blank', '_blank');
-    if (win) {
-      win.document.body.style.margin = '0';
-      win.document.body.style.height = '100vh';
-      const iframe = win.document.createElement('iframe');
-      iframe.style.border = 'none';
-      iframe.style.width = '100%';
-      iframe.style.height = '100%';
-      iframe.src = window.location.href;
-      win.document.body.appendChild(iframe);
-      window.location.replace('https://classroom.google.com');
+  // 1. Lanzador about:blank (Espera un clic para burlar el bloqueador del navegador)
+  function launchStealth() {
+    if (window.top === window.self && !window.location.href.includes('about:blank')) {
+      let win = window.open('about:blank', '_blank');
+      if (win) {
+        win.document.body.style.margin = '0';
+        win.document.body.style.height = '100vh';
+        let iframe = win.document.createElement('iframe');
+        iframe.style.border = 'none';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.src = window.location.href;
+        win.document.body.appendChild(iframe);
+        window.location.replace('https://classroom.google.com');
+      }
     }
   }
+
+  // Se activa silenciosamente en el primer clic que hagas en la página
+  document.addEventListener('click', launchStealth, { once: true });
 
   // 2. BOTÓN DE PÁNICO: Presionar 'Escape' te manda a Google Classroom
   document.addEventListener('keydown', (e) => {
